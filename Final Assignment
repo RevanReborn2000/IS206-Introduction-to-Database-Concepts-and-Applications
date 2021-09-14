@@ -1,4 +1,57 @@
+Q1. 
+SELECT rev_name, rev_stars,mov_title 
+FROM reviewer, rating, movie 
+WHERE reviewer.rev_id = rating.rev_id AND movie.mov_id = rating.mov_id 
+Q2a. 
+SELECT mov_title, rev_stars 
+FROM movie AS m, rating AS r 
+WHERE m.mov_id = r.mov_id;
 
-SELECT rev_name, rev_stars,mov_title
-FROM reviewer, rating, movie
-WHERE reviewer.rev_id = rating.rev_id AND movie.mov_id = rating.mov_id
+Q2b. 
+SELECT mov_title, rev_stars, rev_name 
+FROM movie AS m, rating AS r, reviewer as rw WHERE m.mov_id = r.mov_id AND rw.rev_id = r.rev_id 
+Q2c. 
+SELECT mov_title, rev_stars, rev_name 
+FROM movie AS m JOIN rating AS r JOIN reviewer as rw ON m.mov_id = r.mov_id AND rw.rev_id = r.rev_id
+
+Q3. 
+SELECT dir_fname, dir_lname, count(*) 
+FROM director , movie_direction 
+WHERE director.dir_id = movie_direction.dir_id 
+GROUP BY director.dir_id 
+ORDER BY count(*) desc; 
+
+Q4a. 
+SELECT mov_title, mov_year, act_fname, act_lname 
+FROM actor, movie, movie_cast 
+WHERE actor.act_id = movie_cast.act_id AND movie_cast.mov_id = movie.mov_id
+
+Q4b. 
+SELECT mov_title, mov_year as release year, act_fname, act_lname FROM actor JOIN movie JOIN movie_cast ON 
+actor.act_id = movie_cast.act_id AND movie_cast.mov_id = movie.mov_id 
+Q5a. 
+SELECT mov_title, mov_year, act_fname, act_lname, movie_cast.role FROM actor, movie, movie_cast 
+WHERE actor.act_id = movie_cast.act_id AND movie_cast.mov_id = movie.mov_id
+
+Q5b. 
+SELECT mov_title, mov_year, act_fname, act_lname, movie_cast.role FROM actor JOIN movie JOIN movie_cast ON 
+actor.act_id = movie_cast.act_id AND movie_cast.mov_id = movie.mov_id 
+Q6a. 
+SELECT mov_title, mov_year, act_fname, act_lname, movie_cast.role, dir_fname, dir_lname FROM actor, movie, movie_cast, director, movie_direction
+WHERE actor.act_id = movie_cast.act_id AND movie_cast.mov_id = movie.mov_id AND director.dir_id = movie_direction.dir_id AND movie_direction.mov_id = movie.mov_id ORDER BY mov_year ASC, mov_title; 
+
+Q6b. 
+SELECT mov_title, mov_year, act_fname, act_lname, movie_cast.role, dir_fname, dir_lname FROM actor JOIN movie JOIN movie_cast JOIN director JOIN movie_direction ON actor.act_id = movie_cast.act_id AND movie_cast.mov_id = movie.mov_id AND director.dir_id = movie_direction.dir_id AND movie_direction.mov_id = movie.mov_id ORDER BY mov_year ASC, mov_title;
+
+Q7. 
+SELECT mov_title, gen_title 
+FROM movie JOIN movie_genre JOIN genre 
+ON movie.mov_id = movie_genre.mov_id AND movie_genre.gen_id = genre.gen_id 
+Q8: 
+SELECT gen_title, rev_stars 
+FROM genre, rating, movie_genre 
+WHERE genre.gen_id = movie_genre.gen_id AND movie_genre.mov_id = rating.mov_id ORDER BY rev_stars DESC, gen_title ASC;
+
+Q9: 
+SELECT act_fname, act_lname, dir_fname, dir_lname,role, mov_title FROM actor JOIN director JOIN movie JOIN movie_cast JOIN movie_direction ON actor.act_id = movie_cast.act_id AND movie_cast.mov_id = movie.mov_id AND movie.mov_id = movie_direction.mov_id AND director.dir_id = movie_direction.dir_id HAVING act_fname = dir_fname AND act_lname = dir_lname
+
